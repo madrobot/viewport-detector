@@ -19,7 +19,7 @@ $('body > ul').viewportDetector({
          * @var int cardIndex   The index of the current active card
          * @var object card     The DOM object of the active card
          * @var object prev     The DOM object of the previously active card
-        */
+         */
         cardChange: function (cardIndex, card, prev) {
             console.log('Card Activated:', cardIndex, card, prev);
         }
