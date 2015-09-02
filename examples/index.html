@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Inline Video Play</title>
+        <title>Viewport Detector</title>
         <style>
             body > ul li {
                 width: 512px;
@@ -17,15 +17,15 @@
     </head>
     <body style="margin:0; padding:0; background: #ccc">
         <ul style="list-style:none; margin:0; padding:0">
-            <li>video</li>
-            <li>video</li>
-            <li>video</li>
-            <li>video</li>
-            <li>video</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
+            <li>...</li>
         </ul>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-        <script src="./jquery-viewport-detector.js"></script>
+        <script src="../js/viewport-detector.js"></script>
         <script>
             $('body > ul').viewportDetector({
                 callback: {
