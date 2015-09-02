@@ -1,0 +1,25 @@
+{
+  "name": "viewport-detector",
+  "version": "0.1.0",
+  "homepage": "https://github.com/wsaleme/viewport-detector",
+  "authors": [
+    "William Salemé <william.saleme@gmail.com>"
+  ],
+  "description": "Simple utility that detects objects as they scroll into the viewport",
+  "main": "js/viewport-detector.js",
+  "keywords": [
+    "jquery",
+    "viewport",
+    "detector",
+    "scroll",
+    "threshold"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
