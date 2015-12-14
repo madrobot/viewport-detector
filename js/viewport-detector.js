@@ -80,22 +80,13 @@
      */
     ViewportDetector.prototype.isInViewport = function (el) {
 
-        // Define the context of this class
-        var detector = this;
+        var $el = $(el);
+        var viewTop = $(window).scrollTop();
+        var viewBottom = viewTop + $(window).height();
+        var elTop = $el.offset().top;
+        var elBottom = elTop + $el.height();
 
-        // Detect of this is a jQuery element
-        if (typeof jQuery === "function" && el instanceof jQuery) {
-            el = el[0];
-        }
-
-        // Get the position of this element
-        var rect = el.getBoundingClientRect();
-
-        // Check if element is in viewport within the threshold
-        return (
-            rect.top + detector.threshold >= 0 &&
-            rect.bottom - detector.threshold <= detector.windowHeight
-        );
+        return ((viewTop < (elTop + this.threshold)) && (viewBottom > (elBottom - this.threshold)));
     };
 
     /**
@@ -119,6 +110,7 @@
             detector.$el.find(detector.selector).each(function (cardIndex, card) {
                 if (detector.isInViewport(card) && !$(card).hasClass(detector.activeClass)) {
                     detector.activateCard(cardIndex, card);
+                    return false;
                 }
             });
         }
