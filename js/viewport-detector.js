@@ -95,7 +95,7 @@
     ViewportDetector.prototype.listen = function () {
 
         // Define the context of this class
-        var detector = this;
+        var detector = this, changedCards = 0;
 
         // If we're at the top of the page, activate the first element
         if ($(window).scrollTop() <= 0) {
@@ -106,10 +106,11 @@
             detector.activateLast();
 
         // Otherwise, iterate over the given selector to determine states
-        } else {
+        } else if (!detector.isInViewport(detector.$el.find(detector.activeSelector).get(0))) {
             detector.$el.find(detector.selector).each(function (cardIndex, card) {
-                if (detector.isInViewport(card) && !$(card).hasClass(detector.activeClass)) {
+                if (detector.isInViewport(card) && !$(card).hasClass(detector.activeClass) && !changedCards) {
                     detector.activateCard(cardIndex, card);
+                    changedCards++;
                     return false;
                 }
             });
@@ -117,7 +118,7 @@
 
         // Ensure that only the first element is the given collection has the active class
         if (detector.$el.find(detector.activeSelector).length > 1) {
-            var firstCard = detector.$el.find(detector.selector).filter(':first-child');
+            var firstCard = detector.$el.find(detector.selector).filter(':first');
             detector.resetAll();
             firstCard.addClass(detector.activeClass);
         }
