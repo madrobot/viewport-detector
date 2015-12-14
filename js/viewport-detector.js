@@ -48,7 +48,7 @@
         var prev = this.$el.find(this.activeSelector);
         var cardsLength = this.$el.find(this.selector).length;
         if (this.activate(card, prev)) {
-            this.callback.cardChange(cardsLength, card[0], this.prev);
+            this.callback.cardChange(cardsLength - 1, card[0], this.prev);
         }
     };
 
