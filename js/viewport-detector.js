@@ -84,13 +84,15 @@
      */
     ViewportDetector.prototype.isInViewport = function (el) {
 
-        var $el = $(el);
-        var viewTop = $(window).scrollTop();
-        var viewBottom = viewTop + $(window).height();
-        var elTop = $el.offset().top;
-        var elBottom = elTop + $el.height();
+        try {
+            var $el = $(el);
+            var viewTop = $(window).scrollTop();
+            var viewBottom = viewTop + $(window).height();
+            var elTop = $el.offset().top;
+            var elBottom = elTop + $el.height();
 
-        return ((viewTop < (elTop + this.threshold)) && (viewBottom > (elBottom - this.threshold)));
+            return ((viewTop < (elTop + this.threshold)) && (viewBottom > (elBottom - this.threshold)));
+        } catch (error) { return false; }
     };
 
     /**
