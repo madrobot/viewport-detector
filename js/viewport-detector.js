@@ -9,15 +9,14 @@
         this.activeClass = options.activeClass;
         this.selector = options.selector;
         this.activeSelector = this.selector+'.'+this.activeClass;
-        this.cardHeight = +this.$el.find(this.selector).filter(':first-child').height();
+        this.cardHeight = +this.$el.find(this.selector).filter(':first').height();
         this.sensitivity = options.sensitivity;
         this.threshold = this.cardHeight * this.sensitivity;
         this.windowHeight = (window.innerHeight || document.documentElement.clientHeight);
 
         this.callback = {};
-        this.callback.cardChange = options.callback.cardChange;
-        this.callback.topCard = options.callback.topCard;
-        this.callback.bottomCard = options.callback.bottomCard;
+        this.callback.beforeChange = options.callback.beforeChange;
+        this.callback.afterChange = options.callback.afterChange;
 
         this.$el.addClass('viewport-detector-enabled');
     };
@@ -33,10 +32,10 @@
      * Activates the first card
      */
     ViewportDetector.prototype.activateFirst = function () {
-        var card = this.$el.find(this.selector).filter(':first-child');
+        var card = this.$el.find(this.selector).filter(':first');
         var prev = this.$el.find(this.activeSelector);
         if (this.activate(card, prev)) {
-            this.callback.cardChange(0, card[0], this.prev);
+            this.callback.afterChange(0, card[0], this.prev);
         }
     };
 
@@ -44,11 +43,11 @@
      * Activates the last card
      */
     ViewportDetector.prototype.activateLast = function () {
-        var card = this.$el.find(this.selector).filter(':last-child');
+        var card = this.$el.find(this.selector).filter(':last');
         var prev = this.$el.find(this.activeSelector);
         var cardsLength = this.$el.find(this.selector).length;
         if (this.activate(card, prev)) {
-            this.callback.cardChange(cardsLength - 1, card[0], this.prev);
+            this.callback.afterChange(cardsLength - 1, card[0], this.prev);
         }
     };
 
@@ -58,7 +57,7 @@
     ViewportDetector.prototype.activateCard = function (cardIndex, card) {
         var prev = this.$el.find(this.activeSelector);
         if (this.activate($(card), prev)) {
-            this.callback.cardChange(cardIndex, card, this.prev);
+            this.callback.afterChange(cardIndex, card, this.prev);
         }
     };
 
@@ -67,10 +66,15 @@
      */
     ViewportDetector.prototype.activate = function (card, prev) {
         if (!card.is(prev)) {
+            var cardIndex = this.$el.find(this.selector).index(card);
             this.prev = prev.length ? prev[0] : null;
-            this.resetAll();
-            card.addClass(this.activeClass);
-            return true;
+            var beforeChangeStatus = this.callback.beforeChange(cardIndex, card, this.prev);
+
+            if (beforeChangeStatus !== false) {
+                this.resetAll();
+                card.addClass(this.activeClass);
+                return true;
+            }
         }
         return false;
     };
@@ -132,7 +136,8 @@
             sensitivity: 0.2,
             activeClass: 'active-card',
             callback: {
-                cardChange: null
+                beforeChange: null,
+                afterChange: null
             }
         }, settings);
 
