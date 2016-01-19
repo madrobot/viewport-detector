@@ -13,6 +13,7 @@
         this.sensitivity = options.sensitivity;
         this.threshold = this.cardHeight * this.sensitivity;
         this.windowHeight = (window.innerHeight || document.documentElement.clientHeight);
+        this.carousel = options.carousel;
 
         this.callback = {};
         this.callback.beforeChange = options.callback.beforeChange;
@@ -124,7 +125,15 @@
 
         // Ensure that only the first element is the given collection has the active class
         if (detector.$el.find(detector.activeSelector).length > 1) {
-            var firstCard = detector.$el.find(detector.selector).filter(':first');
+            var firstCard = null;
+            if (typeof detector.carousel == 'object' &&
+                typeof detector.carousel.selector == 'string' &&
+                detector.carousel.selector.length) {
+
+                firstCard = detector.$el.find(detector.selector).filter(detector.carousel.selector);
+            } else {
+                firstCard = detector.$el.find(detector.selector).filter(':first');
+            }
             detector.resetAll();
             firstCard.addClass(detector.activeClass);
         }
@@ -137,6 +146,7 @@
             selector: 'li',
             sensitivity: 0.2,
             activeClass: 'active-card',
+            carousel: null,
             callback: {
                 beforeChange: null,
                 afterChange: null
